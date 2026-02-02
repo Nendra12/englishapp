@@ -3,7 +3,7 @@ import { sentenceTemplates, subjects, verbs, objects, shuffleArray } from '@/dat
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, XCircle, ArrowRight, RotateCcw } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, RotateCcw, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SentenceBuilderProps {
@@ -19,6 +19,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ onComplete }) 
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [score, setScore] = useState({ correct: 0, wrong: 0 });
+  const [isLoading, setIsLoading] = useState(false);
 
   const currentQuestion = questions[currentIndex];
 
@@ -38,9 +39,10 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ onComplete }) 
     }
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = async () => {
     if (currentIndex + 1 >= questions.length) {
-      onComplete(score.correct + (isCorrect ? 0 : 0), score.wrong);
+      setIsLoading(true);
+      await onComplete(score.correct + (isCorrect ? 0 : 0), score.wrong);
       return;
     }
     
@@ -212,9 +214,18 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ onComplete }) 
             Cek Jawaban
           </Button>
         ) : (
-          <Button className="flex-1" onClick={nextQuestion}>
-            {currentIndex + 1 >= questions.length ? 'Selesai' : 'Soal Berikutnya'}
-            <ArrowRight className="ml-2 h-4 w-4" />
+          <Button className="flex-1" onClick={nextQuestion} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Menyimpan...
+              </>
+            ) : (
+              <>
+                {currentIndex + 1 >= questions.length ? 'Selesai' : 'Soal Berikutnya'}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
           </Button>
         )}
       </div>

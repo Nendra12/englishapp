@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface VerbDrillProps {
@@ -29,6 +29,7 @@ export const VerbDrill: React.FC<VerbDrillProps> = ({ onComplete }) => {
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [score, setScore] = useState({ correct: 0, wrong: 0 });
+  const [isLoading, setIsLoading] = useState(false);
 
   const currentQuestion = questions[currentIndex];
   const { verb, givenForm } = currentQuestion;
@@ -56,9 +57,10 @@ export const VerbDrill: React.FC<VerbDrillProps> = ({ onComplete }) => {
     }
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = async () => {
     if (currentIndex + 1 >= questions.length) {
-      onComplete(score.correct, score.wrong);
+      setIsLoading(true);
+      await onComplete(score.correct, score.wrong);
       return;
     }
     
@@ -163,9 +165,18 @@ export const VerbDrill: React.FC<VerbDrillProps> = ({ onComplete }) => {
             Cek Jawaban
           </Button>
         ) : (
-          <Button className="flex-1" onClick={nextQuestion}>
-            {currentIndex + 1 >= questions.length ? 'Selesai' : 'Soal Berikutnya'}
-            <ArrowRight className="ml-2 h-4 w-4" />
+          <Button className="flex-1" onClick={nextQuestion} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Menyimpan...
+              </>
+            ) : (
+              <>
+                {currentIndex + 1 >= questions.length ? 'Selesai' : 'Soal Berikutnya'}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
           </Button>
         )}
       </div>

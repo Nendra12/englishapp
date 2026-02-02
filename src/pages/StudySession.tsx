@@ -199,13 +199,16 @@ const StudySession: React.FC = () => {
       await checkAchievements(correct, wrong, accuracy);
       
       toast.success('Modul selesai! 🎉');
+      
+      // Refresh profile dan tunggu sebentar untuk UX yang lebih baik
+      await refreshProfile();
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       console.error('Error saving session:', error);
       toast.error('Gagal menyimpan progress');
     }
     
     setSessionState('summary');
-    await refreshProfile();
   }, [currentModule, user, startTime, refreshProfile]);
 
   const checkAchievements = async (correct: number, wrong: number, accuracy: number) => {
