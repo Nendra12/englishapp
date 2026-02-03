@@ -17,6 +17,7 @@ import StudySession from "./pages/StudySession";
 import VocabNotebook from "./pages/VocabNotebook";
 import ProgressPage from "./pages/ProgressPage";
 import AchievementsPage from "./pages/AchievementsPage";
+import DictionarySearch from "./pages/DictionarySearch";
 
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="/app/dashboard" element={<Dashboard />} />
                 <Route path="/app/session" element={<StudySession />} />
                 <Route path="/app/vocab" element={<VocabNotebook />} />
+                <Route path="/app/dictionary" element={<DictionarySearch />} />
                 <Route path="/app/progress" element={<ProgressPage />} />
                 <Route path="/app/achievements" element={<AchievementsPage />} />
               </Route>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, BookOpen, Library, TrendingUp, Trophy, LogOut } from 'lucide-react';
+import { Home, BookOpen, Library, Search, TrendingUp, Trophy, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/app/dashboard', icon: Home, label: 'Dashboard' },
   { to: '/app/session', icon: BookOpen, label: 'Belajar' },
   { to: '/app/vocab', icon: Library, label: 'Kosakata' },
+  { to: '/app/dictionary', icon: Search, label: 'Dictionary' },
   { to: '/app/progress', icon: TrendingUp, label: 'Progress' },
   { to: '/app/achievements', icon: Trophy, label: 'Pencapaian' },
 ];
